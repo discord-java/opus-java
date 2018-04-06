@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+javadoc.enabled = false
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'net.java.dev.jna:jna:4.4.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "4.6"
+}
