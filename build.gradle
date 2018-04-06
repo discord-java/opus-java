@@ -13,6 +13,17 @@ dependencies {
     compile 'net.java.dev.jna:jna:4.4.0'
 }
 
+publishing {
+    publications {
+        Opus(MavenPublication) {
+            from components.java
+            groupId 'net.dv8tion'
+            artifactId project.name
+            version '1.0.0'
+        }
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = "4.6"
 }
