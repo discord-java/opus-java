@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'club.minnced'
-project.version = '1.0.1'
+project.version = '1.0.0'
 javadoc.enabled = false
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
