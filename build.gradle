@@ -1,8 +1,11 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.7.3'
 }
 
+group = 'club.minnced'
+project.version = '1.0.0'
 javadoc.enabled = false
 
 repositories {
@@ -10,18 +13,52 @@ repositories {
 }
 
 dependencies {
-    compile 'net.java.dev.jna:jna:4.4.0'
+    implementation 'net.java.dev.jna:jna:4.4.0'
 }
 
 publishing {
     publications {
-        Opus(MavenPublication) {
+        BintrayRelease(MavenPublication) {
             from components.java
-            groupId 'net.dv8tion'
+            groupId project.group
             artifactId project.name
-            version '1.0.0'
+            version version
         }
     }
+}
+
+bintray {
+    user = bintrayUsername
+    key = bintrayApiKey
+    publications = ["BintrayRelease"]
+    pkg {
+        repo = 'maven'
+        name = project.name
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/discord-java/opus-java.git'
+        githubRepo = 'discord-java/opus-java'
+        publish = true
+        version {
+            name = project.version
+            vcsTag = project.version
+            released = new Date()
+            gpg {
+                sign = true
+            }
+        }
+    }
+}
+
+
+String getProjectProperty(String propertyName) {
+    return hasProperty(propertyName) ? this.properties[propertyName] : ""
+}
+
+bintrayUpload {
+    dependsOn build
+
+    onlyIf { !getProjectProperty("bintrayUsername").empty }
+    onlyIf { !getProjectProperty("bintrayApiKey").empty }
 }
 
 task wrapper(type: Wrapper) {
