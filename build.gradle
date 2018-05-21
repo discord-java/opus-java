@@ -5,8 +5,10 @@ plugins {
 }
 
 group = 'club.minnced'
-project.version = '1.0.0'
+project.version = '1.0.1'
 javadoc.enabled = false
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     jcenter()
