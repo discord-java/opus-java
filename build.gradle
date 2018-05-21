@@ -16,6 +16,16 @@ dependencies {
     implementation 'net.java.dev.jna:jna:4.4.0'
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from 'src/main/java'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 publishing {
     publications {
         BintrayRelease(MavenPublication) {
@@ -23,6 +33,9 @@ publishing {
             groupId project.group
             artifactId project.name
             version version
+
+            artifact sourcesJar
+            artifact javadocJar
         }
     }
 }
