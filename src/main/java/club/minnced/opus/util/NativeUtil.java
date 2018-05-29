@@ -19,20 +19,19 @@ import java.io.*;
 
 /**
  * This is taken directly from: <a href="https://github.com/adamheinrich/native-utils">
- *     https://github.com/adamheinrich/native-utils</a><br>
+ * https://github.com/adamheinrich/native-utils</a><br>
  * Credit to the original author: Adam Heinrich
  * <p>
  * A simple library class which helps with loading dynamic libraries stored in the
- * JAR archive. These libraries usualy contain implementation of some methods in
+ * JAR archive. These libraries usually contain implementation of some methods in
  * native code (using JNI - Java Native Interface).
  * <p>
  * <a href="http://adamheinrich.com/blog/2012/how-to-load-native-jni-library-from-jar">
- *     http://adamheinrich.com/blog/2012/how-to-load-native-jni-library-from-jar</a><br>
+ * http://adamheinrich.com/blog/2012/how-to-load-native-jni-library-from-jar</a><br>
  * <a href="https://github.com/adamheinrich/native-utils">
- *     https://github.com/adamheinrich/native-utils</a>
+ * https://github.com/adamheinrich/native-utils</a>
  */
-public class NativeUtil
-{
+public class NativeUtil {
 
     /**
      * Private constructor - this class will never be instanced
@@ -42,12 +41,12 @@ public class NativeUtil
 
     /**
      * Loads library from current JAR archive
-     *
+     * <p>
      * The file from JAR is copied into system temporary directory and then loaded. The temporary file is deleted after exiting.
      * Method uses String as filename because the pathname is "abstract", not system-dependent.
      *
      * @param path The filename inside JAR as absolute path (beginning with '/'), e.g. /package/File.ext
-     * @throws IOException If temporary file creation or read/write operation fails
+     * @throws IOException              If temporary file creation or read/write operation fails
      * @throws IllegalArgumentException If source file (param path) does not exist
      * @throws IllegalArgumentException If the path is not absolute or if the filename is shorter than three characters (restriction of {@link File#createTempFile(java.lang.String, java.lang.String)}).
      */
@@ -67,7 +66,7 @@ public class NativeUtil
         if (filename != null) {
             parts = filename.split("\\.", 2);
             prefix = parts[0];
-            suffix = (parts.length > 1) ? "."+parts[parts.length - 1] : null; // Thanks, davs! :-)
+            suffix = (parts.length > 1) ? "." + parts[parts.length - 1] : null; // Thanks, davs! :-)
         }
 
         // Check if the filename is okay

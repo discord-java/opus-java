@@ -5,8 +5,7 @@ plugins {
 }
 
 group = 'club.minnced'
-project.version = '1.0.0'
-javadoc.enabled = false
+project.version = '1.0.1'
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -27,6 +26,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
+build.dependsOn sourcesJar
+build.dependsOn javadocJar
 
 publishing {
     publications {
