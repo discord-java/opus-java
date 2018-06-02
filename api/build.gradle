@@ -9,7 +9,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-project.version = '1.0.0'
+project.version = rootProject.version
 ext.moduleName = 'opus-java-api'
 archivesBaseName = moduleName
 

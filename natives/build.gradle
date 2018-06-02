@@ -4,7 +4,7 @@ plugins {
     id 'com.jfrog.bintray'
 }
 
-project.version = '1.0.0'
+project.version = rootProject.version
 ext.moduleName = 'opus-java-natives'
 archivesBaseName = moduleName
 
