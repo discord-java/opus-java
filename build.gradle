@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'club.minnced'
-project.version = '1.0.2'
+project.version = '1.0.3'
 
 task wrapper(type: Wrapper) {
     gradleVersion = "4.6"
@@ -68,12 +68,19 @@ String getProjectProperty(String propertyName) {
 publishing {
     publications {
         BintrayRelease(MavenPublication) {
-            from components.java
             groupId project.group
             artifactId project.name
             version version
-
-            artifact sourcesJar
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.compile.allDependencies.each {
+                    def node = dependenciesNode.appendNode('dependency')
+                    node.appendNode('groupId', it.group)
+                    node.appendNode('artifactId', it instanceof ProjectDependency ? it.dependencyProject.moduleName : it.name)
+                    node.appendNode('version' , it.version)
+                    node.appendNode('scope', 'compile')
+                }
+            }
         }
     }
 }
