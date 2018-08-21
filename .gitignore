@@ -5,3 +5,4 @@ out/
 .idea/
 
 gradle.properties
+*.iml

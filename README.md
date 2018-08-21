@@ -100,7 +100,9 @@ any other features. This can be used if you want all features of this binding.
 
 ```gradle
 dependencies {
-    compile 'club.minnced:opus-java:%VERSION%'
+    compile ('club.minnced:opus-java:%VERSION%@pom') {
+        transitive = true // gradle defaults to transitive false with @pom
+    }
 }
 ```
 
