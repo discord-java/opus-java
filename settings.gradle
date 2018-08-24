@@ -1,2 +1,3 @@
 rootProject.name = 'opus-java'
 include 'api', 'natives'
+enableFeaturePreview('STABLE_PUBLISHING')

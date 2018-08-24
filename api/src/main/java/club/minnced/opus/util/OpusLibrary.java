@@ -37,7 +37,7 @@ public final class OpusLibrary {
         platforms.put("linux-x86-64", "so");
         platforms.put("win32-x86", "dll");
         platforms.put("win32-x86-64", "dll");
-        SUPPORTED_SYSTEMS = "Supported Systems: " + platforms.values() + "\nCurrent Operating system: " + Platform.RESOURCE_PREFIX;
+        SUPPORTED_SYSTEMS = "Supported Systems: " + platforms.keySet() + "\nCurrent Operating system: " + Platform.RESOURCE_PREFIX;
     }
 
     private OpusLibrary() {}
@@ -49,7 +49,7 @@ public final class OpusLibrary {
      * @return Immutable list of currently supported platforms
      */
     public static List<String> getSupportedPlatforms() {
-        return Collections.unmodifiableList(new ArrayList<>(platforms.values()));
+        return Collections.unmodifiableList(new ArrayList<>(platforms.keySet()));
     }
 
     /**
