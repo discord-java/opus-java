@@ -9,9 +9,11 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-project.version = rootProject.version
+project.version = "1.0.5"
 ext.moduleName = 'opus-java-api'
 archivesBaseName = moduleName
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     implementation 'net.java.dev.jna:jna:4.4.0'
@@ -38,6 +40,8 @@ bintrayUpload {
 }
 
 bintray {
+    override = false
+    dryRun = false
     user = bintrayUsername
     key = bintrayApiKey
     publications = ["BintrayRelease"]

@@ -86,7 +86,7 @@ dependencies {
 </dependency>
 ```
 
-### opus-java
+### opus-java-bom
 
 [ ![version-image][core-version] ][core-download]
 
@@ -94,25 +94,40 @@ Note: Replace `%VERSION%` with the version above.
 
 This artifact depends on **api** and **natives** while not providing
 any other features. This can be used if you want all features of this binding.
-<br>Note that this is of type `pom` rather than the default `jar`.
 
 **Gradle**
 
 ```gradle
 dependencies {
-    compile ('club.minnced:opus-java:%VERSION%@pom') {
-        transitive = true // gradle defaults to transitive false with @pom
-    }
+    compile ("club.minnced:opus-java-bom:%VERSION%")
+    compile ("club.minnced:opus-java-api")
+    compile ("club.minnced:opus-java-natives")
 }
 ```
 
 **Maven**
 
 ```xml
-<dependency>
-    <groupId>club.minnced</groupId>
-    <artifactId>opus-java</artifactId>
-    <version>%VERSION%</version>
-    <type>pom</type>
-</dependency>
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>club.minnced</groupId>
+            <artifactId>opus-java-bom</artifactId>
+            <version>%VERSION%</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+<dependencies>
+    <dependency>
+        <groupId>club.minnced</groupId>
+        <artifactId>opus-java-api</artifactId>
+    </dependency>
+    <dependency>    
+        <groupId>club.minnced</groupId>
+        <artifactId>opus-java-natives</artifactId>
+    </dependency>
+</dependencies>
+
 ```

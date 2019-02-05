@@ -4,9 +4,11 @@ plugins {
     id 'com.jfrog.bintray'
 }
 
-project.version = rootProject.version
+project.version = "1.0.5"
 ext.moduleName = 'opus-java-natives'
 archivesBaseName = moduleName
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
@@ -22,6 +24,8 @@ bintrayUpload {
 }
 
 bintray {
+    override = false
+    dryRun = false
     user = bintrayUsername
     key = bintrayApiKey
     publications = ["BintrayRelease"]
