@@ -2,8 +2,8 @@
 [api-download]: https://bintray.com/minndevelopment/maven/opus-java-api/_latestVersion
 [natives-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java-natives/images/download.svg
 [natives-download]: https://bintray.com/minndevelopment/maven/opus-java-natives/_latestVersion
-[core-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java/images/download.svg
-[core-download]: https://bintray.com/minndevelopment/maven/opus-java/_latestVersion
+[core-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java-bom/images/download.svg
+[core-download]: https://bintray.com/minndevelopment/maven/opus-java-bom/_latestVersion
 
 # opus-java
 
