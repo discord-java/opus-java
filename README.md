@@ -35,7 +35,7 @@ repositories {
 
 [ ![version-image][api-version] ][api-download]
 
-Note: Replace `%VERSION%` with the version above.
+Note: Replace `$VERSION` with the version above.
 
 This artifact only provides the interface to access the native opus libraries. 
 It can be used without `opus-java-natives` by providing the library to `OpusLibrary.loadFrom(String)` using
@@ -45,7 +45,7 @@ an absolute path.
 
 ```gradle
 dependencies {
-    compile 'club.minnced:opus-java-api:%VERSION%'
+    compile ("club.minnced:opus-java-api:$VERSION")
 }
 ```
 
@@ -55,7 +55,7 @@ dependencies {
 <dependency>
     <groupId>club.minnced</groupId>
     <artifactId>opus-java-api</artifactId>
-    <version>%VERSION%</version>
+    <version>$VERSION</version>
 </dependency>
 ```
 
@@ -72,7 +72,7 @@ This artifact only provides the native opus libraries as resources.
 
 ```gradle
 dependencies {
-    compile 'club.minnced:opus-java-natives:%VERSION%'
+    compile ("club.minnced:opus-java-natives:$VERSION")
 }
 ```
 
@@ -82,7 +82,7 @@ dependencies {
 <dependency>
     <groupId>club.minnced</groupId>
     <artifactId>opus-java-natives</artifactId>
-    <version>%VERSION%</version>
+    <version>$VERSION</version>
 </dependency>
 ```
 
@@ -100,9 +100,7 @@ any other features. This can be used if you want all features of this binding.
 
 ```gradle
 dependencies {
-    compile ('club.minnced:opus-java:%VERSION%@pom') {
-        transitive = true // gradle defaults to transitive false with @pom
-    }
+    compile ("club.minnced:opus-java:$VERSION")
 }
 ```
 
@@ -112,7 +110,7 @@ dependencies {
 <dependency>
     <groupId>club.minnced</groupId>
     <artifactId>opus-java</artifactId>
-    <version>%VERSION%</version>
+    <version>$VERSION</version>
     <type>pom</type>
 </dependency>
 ```
