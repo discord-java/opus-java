@@ -1,9 +1,9 @@
 [api-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-api%2Fmaven-metadata.xml&color=informational&label=Download
-[api-download]: https://bintray.com/minndevelopment/maven/opus-java-api/_latestVersion
+[api-download]: #opus-java-api
 [natives-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-natives%2Fmaven-metadata.xml&color=informational&label=Download
-[natives-download]: https://bintray.com/minndevelopment/maven/opus-java-natives/_latestVersion
+[natives-download]: #opus-java-natives
 [core-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java%2Fmaven-metadata.xml&color=informational&label=Download
-[core-download]: https://bintray.com/minndevelopment/maven/opus-java/_latestVersion
+[core-download]: #opus-java
 
 # opus-java
 
@@ -11,7 +11,7 @@ Modular java binding for opus natives.
 
 ## Artifacts
 
-All artifacts are published to **jcenter**.
+All artifacts are published to an **S3 Bucket**.
 
 **Gradle**
 
