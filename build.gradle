@@ -27,19 +27,10 @@ build.dependsOn sourcesJar
 publishing {
     publications {
         Release(MavenPublication) {
+            from components.java
             groupId project.group
             artifactId project.name
             version version
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-                configurations.compile.allDependencies.each {
-                    def node = dependenciesNode.appendNode('dependency')
-                    node.appendNode('groupId', it.group)
-                    node.appendNode('artifactId', it instanceof ProjectDependency ? it.dependencyProject.moduleName : it.name)
-                    node.appendNode('version' , it.version)
-                    node.appendNode('scope', 'compile')
-                }
-            }
 
             repositories {
                 maven {
