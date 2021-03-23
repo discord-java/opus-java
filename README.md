@@ -1,8 +1,8 @@
-[api-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java-api/images/download.svg
+[api-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-api%2Fmaven-metadata.xml&color=informational&label=Download
 [api-download]: https://bintray.com/minndevelopment/maven/opus-java-api/_latestVersion
-[natives-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java-natives/images/download.svg
+[natives-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-natives%2Fmaven-metadata.xml&color=informational&label=Download
 [natives-download]: https://bintray.com/minndevelopment/maven/opus-java-natives/_latestVersion
-[core-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java/images/download.svg
+[core-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java%2Fmaven-metadata.xml&color=informational&label=Download
 [core-download]: https://bintray.com/minndevelopment/maven/opus-java/_latestVersion
 
 # opus-java
@@ -17,7 +17,10 @@ All artifacts are published to **jcenter**.
 
 ```gradle
 repositories {
-    jcenter()
+    maven {
+        name = "m2-dv8tion"
+        url = "https://m2.dv8tion.net/releases"
+    }
 }
 ```
 
@@ -25,9 +28,9 @@ repositories {
 
 ```xml
 <repository>
-    <id>jcenter</id>
-    <name>bintray-jcenter</name>
-    <url>https://jcenter.bintray.com</url>
+    <id>dv8tion</id>
+    <name>m2-dv8tion</name>
+    <url>https://m2.dv8tion.net/releases</url>
 </repository>
 ```
 

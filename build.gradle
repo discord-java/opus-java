@@ -1,9 +1,5 @@
-plugins {
-    id 'com.jfrog.bintray' version '1.8.1'
-}
-
 group = 'club.minnced'
-project.version = '1.0.4'
+project.version = '1.1.0'
 
 allprojects {
     repositories {
@@ -28,42 +24,9 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 build.dependsOn sourcesJar
 
-bintrayUpload {
-    dependsOn build
-
-    onlyIf { !getProjectProperty("bintrayUsername").empty }
-    onlyIf { !getProjectProperty("bintrayApiKey").empty }
-}
-
-bintray {
-    user = bintrayUsername
-    key = bintrayApiKey
-    publications = ["BintrayRelease"]
-    pkg {
-        repo = 'maven'
-        name = project.name
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/discord-java/opus-java.git'
-        githubRepo = 'discord-java/opus-java'
-        publish = true
-        version {
-            name = project.version
-            vcsTag = project.version
-            released = new Date()
-            gpg {
-                sign = true
-            }
-        }
-    }
-}
-
-String getProjectProperty(String propertyName) {
-    return hasProperty(propertyName) ? this.properties[propertyName] : ""
-}
-
 publishing {
     publications {
-        BintrayRelease(MavenPublication) {
+        Release(MavenPublication) {
             groupId project.group
             artifactId project.name
             version version
@@ -75,6 +38,16 @@ publishing {
                     node.appendNode('artifactId', it instanceof ProjectDependency ? it.dependencyProject.moduleName : it.name)
                     node.appendNode('version' , it.version)
                     node.appendNode('scope', 'compile')
+                }
+            }
+
+            repositories {
+                maven {
+                    url "s3://m2.dv8tion.net/releases"
+                    credentials(AwsCredentials) {
+                        accessKey findProperty("awsAccessKey")
+                        secretKey findProperty("awsSecretKey")
+                    }
                 }
             }
         }
