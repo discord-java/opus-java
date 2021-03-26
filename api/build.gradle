@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.jfrog.bintray'
 }
 
 tasks.withType(JavaCompile) {
@@ -30,42 +29,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 build.dependsOn sourcesJar
 build.dependsOn javadocJar
 
-bintrayUpload {
-    dependsOn build
-
-    onlyIf { !getProjectProperty("bintrayUsername").empty }
-    onlyIf { !getProjectProperty("bintrayApiKey").empty }
-}
-
-bintray {
-    user = bintrayUsername
-    key = bintrayApiKey
-    publications = ["BintrayRelease"]
-    pkg {
-        repo = 'maven'
-        name = moduleName
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/discord-java/opus-java.git'
-        githubRepo = 'discord-java/opus-java'
-        publish = true
-        version {
-            name = project.version
-            vcsTag = project.version
-            released = new Date()
-            gpg {
-                sign = true
-            }
-        }
-    }
-}
-
-String getProjectProperty(String propertyName) {
-    return hasProperty(propertyName) ? this.properties[propertyName] : ""
-}
-
 publishing {
     publications {
-        BintrayRelease(MavenPublication) {
+        Release(MavenPublication) {
             from components.java
             groupId project.group
             artifactId moduleName
@@ -73,6 +39,16 @@ publishing {
 
             artifact sourcesJar
             artifact javadocJar
+
+            repositories {
+                maven {
+                    url "s3://m2.dv8tion.net/releases"
+                    credentials(AwsCredentials) {
+                        accessKey findProperty("awsAccessKey")
+                        secretKey findProperty("awsSecretKey")
+                    }
+                }
+            }
         }
     }
 }

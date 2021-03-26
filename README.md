@@ -1,9 +1,9 @@
-[api-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java-api/images/download.svg
-[api-download]: https://bintray.com/minndevelopment/maven/opus-java-api/_latestVersion
-[natives-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java-natives/images/download.svg
-[natives-download]: https://bintray.com/minndevelopment/maven/opus-java-natives/_latestVersion
-[core-version]: https://api.bintray.com/packages/minndevelopment/maven/opus-java/images/download.svg
-[core-download]: https://bintray.com/minndevelopment/maven/opus-java/_latestVersion
+[api-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-api%2Fmaven-metadata.xml&color=informational&label=Download
+[api-download]: #opus-java-api
+[natives-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-natives%2Fmaven-metadata.xml&color=informational&label=Download
+[natives-download]: #opus-java-natives
+[core-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java%2Fmaven-metadata.xml&color=informational&label=Download
+[core-download]: #opus-java
 
 # opus-java
 
@@ -11,13 +11,17 @@ Modular java binding for opus natives.
 
 ## Artifacts
 
-All artifacts are published to **jcenter**.
+All artifacts are published to an **S3 Bucket**.
 
 **Gradle**
 
 ```gradle
 repositories {
-    jcenter()
+    mavenCentral()
+    maven {
+        name = "m2-dv8tion"
+        url = "https://m2.dv8tion.net/releases"
+    }
 }
 ```
 
@@ -25,9 +29,9 @@ repositories {
 
 ```xml
 <repository>
-    <id>jcenter</id>
-    <name>bintray-jcenter</name>
-    <url>https://jcenter.bintray.com</url>
+    <id>dv8tion</id>
+    <name>m2-dv8tion</name>
+    <url>https://m2.dv8tion.net/releases</url>
 </repository>
 ```
 
