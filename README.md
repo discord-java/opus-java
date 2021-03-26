@@ -17,11 +17,11 @@ All artifacts are published to an **S3 Bucket**.
 
 ```gradle
 repositories {
+    mavenCentral()
     maven {
         name = "m2-dv8tion"
         url = "https://m2.dv8tion.net/releases"
     }
-    mavenCentral()
 }
 ```
 
