@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
 }
 
 tasks.withType(JavaCompile) {
@@ -17,17 +18,29 @@ dependencies {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from 'src/main/java'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
 build.dependsOn sourcesJar
 build.dependsOn javadocJar
+
+task signJar(type: Sign, dependsOn: jar) {
+    sign(jar)
+}
+
+task signSourcesJar(type: Sign, dependsOn: sourcesJar) {
+    sign(sourcesJar)
+}
+
+task signJavadocJar(type: Sign, dependsOn: javadocJar) {
+    sign(javadocJar)
+}
 
 publishing {
     publications {
@@ -37,18 +50,41 @@ publishing {
             artifactId moduleName
             version version
 
+            if (canSign) {
+                artifact(signJar.signatureFiles[0]) {
+                    classifier = null
+                    extension = "jar.asc"
+                }
+                artifact(signSourcesJar.signatureFiles[0]) {
+                    classifier = "sources"
+                    extension = "jar.asc"
+                }
+                artifact(signJavadocJar.signatureFiles[0]) {
+                    classifier = "javadoc"
+                    extension = "jar.asc"
+                }
+
+                artifact(signPom.signatureFiles[0]) {
+                    classifier = null
+                    extension = "pom.asc"
+                }
+                artifact(signModule.signatureFiles[0]) {
+                    classifier = null
+                    extension = "module.asc"
+                }
+            }
+
             artifact sourcesJar
             artifact javadocJar
 
-            repositories {
-                maven {
-                    url "s3://m2.dv8tion.net/releases"
-                    credentials(AwsCredentials) {
-                        accessKey findProperty("awsAccessKey")
-                        secretKey findProperty("awsSecretKey")
-                    }
-                }
-            }
+            generatePom(pom, "jar")
         }
     }
+}
+
+signModule.dependsOn generateMetadataFileForReleasePublication
+signPom.dependsOn generatePomFileForReleasePublication
+
+task signFiles {
+    dependsOn(signPom, signModule, signSourcesJar, signJavadocJar, signJar)
 }
