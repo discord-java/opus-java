@@ -1,9 +1,9 @@
-[api-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-api%2Fmaven-metadata.xml&color=informational&label=Download
-[api-download]: #opus-java-api
-[natives-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java-natives%2Fmaven-metadata.xml&color=informational&label=Download
-[natives-download]: #opus-java-natives
-[core-version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fclub%2Fminnced%2Fopus-java%2Fmaven-metadata.xml&color=informational&label=Download
-[core-download]: #opus-java
+[api-version]: https://img.shields.io/maven-central/v/club.minnced/opus-java-api
+[api-download]: https://mvnrepository.com/artifact/club.minnced/opus-java-api/latest
+[natives-version]: https://img.shields.io/maven-central/v/club.minnced/opus-java-natives
+[natives-download]: https://mvnrepository.com/artifact/club.minnced/opus-java-natives/latest
+[core-version]: https://img.shields.io/maven-central/v/club.minnced/opus-java
+[core-download]: https://mvnrepository.com/artifact/club.minnced/opus-java/latest
 
 # opus-java
 
