@@ -11,28 +11,14 @@ Modular java binding for opus natives.
 
 ## Artifacts
 
-All artifacts are published to an **S3 Bucket**.
+All artifacts are published to **maven central**.
 
 **Gradle**
 
 ```gradle
 repositories {
     mavenCentral()
-    maven {
-        name = "m2-dv8tion"
-        url = "https://m2.dv8tion.net/releases"
-    }
 }
-```
-
-**Maven**
-
-```xml
-<repository>
-    <id>dv8tion</id>
-    <name>m2-dv8tion</name>
-    <url>https://m2.dv8tion.net/releases</url>
-</repository>
 ```
 
 ### opus-java-api
@@ -49,7 +35,7 @@ an absolute path.
 
 ```gradle
 dependencies {
-    compile 'club.minnced:opus-java-api:%VERSION%'
+    implementation("club.minnced:opus-java-api:%VERSION%")
 }
 ```
 
@@ -76,7 +62,7 @@ This artifact only provides the native opus libraries as resources.
 
 ```gradle
 dependencies {
-    compile 'club.minnced:opus-java-natives:%VERSION%'
+    implementation("club.minnced:opus-java-natives:%VERSION%")
 }
 ```
 
@@ -104,8 +90,9 @@ any other features. This can be used if you want all features of this binding.
 
 ```gradle
 dependencies {
-    compile ('club.minnced:opus-java:%VERSION%@pom') {
+    implementation("club.minnced:opus-java:%VERSION%@pom") {
         transitive = true // gradle defaults to transitive false with @pom
+        // kotlin uses isTransitive instead
     }
 }
 ```

@@ -1,9 +1,47 @@
+import java.time.Duration
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+}
+
 group = 'club.minnced'
 project.version = '1.1.0'
 
+def getProjectProperty(String name) { return project.properties.getOrDefault(name, null) }
+
+def generatePom(Object pom, String packaging) {
+    pom.packaging = packaging
+    pom.name.set(project.name)
+    pom.description.set("Modular java binding for opus natives.")
+    pom.url.set("https://github.com/discord-java/opus-java")
+    pom.scm {
+        url.set("https://github.com/discord-java/opus-java")
+        connection.set("scm:git:git://github.com/discord-java/opus-java")
+        developerConnection.set("scm:git:ssh:git@github.com:discord-java/opus-java")
+    }
+    pom.licenses {
+        license {
+            name.set("The Apache Software License, Version 2.0")
+            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            distribution.set("repo")
+        }
+    }
+    pom.developers {
+        developer {
+            id.set("Minn")
+            name.set("Florian Spieß")
+            email.set("business@minn.dev")
+        }
+    }
+}
+
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     apply plugin: 'java-library'
@@ -11,18 +49,27 @@ allprojects {
 
     group = 'club.minnced'
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+    ext.canSign = "signing.keyId" in properties
+
+    task signModule(type: Sign) {
+        sign(file("${buildDir}/publications/Release/module.json"))
+    }
+
+    task signPom(type: Sign) {
+        sign(file("${buildDir}/publications/Release/pom-default.xml"))
+    }
 }
 
 dependencies {
-    compile project(':api')
-    compile project(':natives')
+    api project(':api')
+    api project(':natives')
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+task signJar(type: Sign, dependsOn: jar) {
+    sign(jar)
+    enabled = canSign
 }
-
-build.dependsOn sourcesJar
 
 publishing {
     publications {
@@ -32,15 +79,65 @@ publishing {
             artifactId project.name
             version version
 
-            repositories {
-                maven {
-                    url "s3://m2.dv8tion.net/releases"
-                    credentials(AwsCredentials) {
-                        accessKey findProperty("awsAccessKey")
-                        secretKey findProperty("awsSecretKey")
-                    }
+            if (canSign) {
+                artifact(signJar.signatureFiles[0]) {
+                    classifier = null
+                    extension = "jar.asc"
+                }
+                artifact(signPom.signatureFiles[0]) {
+                    classifier = null
+                    extension = "pom.asc"
+                }
+                artifact(signModule.signatureFiles[0]) {
+                    classifier = null
+                    extension = "module.asc"
                 }
             }
+
+            generatePom(pom, "pom")
         }
     }
 }
+
+signModule.dependsOn generateMetadataFileForReleasePublication
+signPom.dependsOn generatePomFileForReleasePublication
+
+task signFiles {
+    dependsOn(signPom, signModule, signJar)
+}
+
+nexusPublishing {
+    repositories.sonatype {
+        username.set(getProjectProperty("ossrhUser"))
+        password.set(getProjectProperty("ossrhPassword"))
+        stagingProfileId.set(getProjectProperty("stagingProfileId"))
+    }
+
+    // Sonatype is very slow :)
+    connectTimeout.set(Duration.ofMinutes(1))
+    clientTimeout.set(Duration.ofMinutes(10))
+
+    transitionCheckOptions {
+        maxRetries.set(100)
+        delayBetween.set(Duration.ofSeconds(5))
+    }
+}
+
+subprojects {
+    initializeSonatypeStagingRepository {
+        mustRunAfter(tasks.withType(Sign))
+    }
+
+    tasks.withType(Sign) {
+        enabled = canSign
+    }
+}
+
+// To publish run these together:
+/*
+
+./gradlew \
+    publishAllPublicationsToSonatypeRepository \
+    closeAndReleaseSonatypeStagingRepository
+
+ */

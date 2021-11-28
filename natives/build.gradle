@@ -1,20 +1,15 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
 }
 
 project.version = rootProject.version
 ext.moduleName = 'opus-java-natives'
 archivesBaseName = moduleName
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-}
-
-build.dependsOn sourcesJar
-
-String getProjectProperty(String propertyName) {
-    return hasProperty(propertyName) ? this.properties[propertyName] : ""
+task signJar(type: Sign, dependsOn: jar) {
+    sign(jar)
 }
 
 publishing {
@@ -25,17 +20,30 @@ publishing {
             artifactId moduleName
             version version
 
-            artifact sourcesJar
+            if (canSign) {
+                artifact(signJar.signatureFiles[0]) {
+                    classifier = null
+                    extension = "jar.asc"
+                }
 
-            repositories {
-                maven {
-                    url "s3://m2.dv8tion.net/releases"
-                    credentials(AwsCredentials) {
-                        accessKey findProperty("awsAccessKey")
-                        secretKey findProperty("awsSecretKey")
-                    }
+                artifact(signPom.signatureFiles[0]) {
+                    classifier = null
+                    extension = "pom.asc"
+                }
+                artifact(signModule.signatureFiles[0]) {
+                    classifier = null
+                    extension = "module.asc"
                 }
             }
+
+            generatePom(pom, "jar")
         }
     }
+}
+
+signModule.dependsOn generateMetadataFileForReleasePublication
+signPom.dependsOn generatePomFileForReleasePublication
+
+task signFiles {
+    dependsOn(signPom, signModule, signJar)
 }
