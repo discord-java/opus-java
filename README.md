@@ -84,7 +84,6 @@ Note: Replace `%VERSION%` with the version above.
 
 This artifact depends on **api** and **natives** while not providing
 any other features. This can be used if you want all features of this binding.
-<br>Note that this is of type `pom` rather than the default `jar`.
 
 **Gradle**
 
