@@ -8,42 +8,22 @@ project.version = rootProject.version
 ext.moduleName = 'opus-java-natives'
 archivesBaseName = moduleName
 
-task signJar(type: Sign, dependsOn: jar) {
-    sign(jar)
-}
-
 publishing {
     publications {
         Release(MavenPublication) {
             from components.java
+
             groupId project.group
             artifactId moduleName
             version version
-
-            if (canSign) {
-                artifact(signJar.signatureFiles[0]) {
-                    classifier = null
-                    extension = "jar.asc"
-                }
-
-                artifact(signPom.signatureFiles[0]) {
-                    classifier = null
-                    extension = "pom.asc"
-                }
-                artifact(signModule.signatureFiles[0]) {
-                    classifier = null
-                    extension = "module.asc"
-                }
-            }
 
             generatePom(pom, "jar")
         }
     }
 }
 
-signModule.dependsOn generateMetadataFileForReleasePublication
-signPom.dependsOn generatePomFileForReleasePublication
-
-task signFiles {
-    dependsOn(signPom, signModule, signJar)
+if (canSign) {
+    signing {
+        sign publishing.publications.Release
+    }
 }

@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'club.minnced'
-project.version = '1.1.0'
+project.version = '1.1.1'
 
 def getProjectProperty(String name) { return project.properties.getOrDefault(name, null) }
 
@@ -66,44 +66,25 @@ dependencies {
     api project(':natives')
 }
 
-task signJar(type: Sign, dependsOn: jar) {
-    sign(jar)
-    enabled = canSign
-}
 
 publishing {
     publications {
         Release(MavenPublication) {
             from components.java
+
             groupId project.group
             artifactId project.name
             version version
 
-            if (canSign) {
-                artifact(signJar.signatureFiles[0]) {
-                    classifier = null
-                    extension = "jar.asc"
-                }
-                artifact(signPom.signatureFiles[0]) {
-                    classifier = null
-                    extension = "pom.asc"
-                }
-                artifact(signModule.signatureFiles[0]) {
-                    classifier = null
-                    extension = "module.asc"
-                }
-            }
-
-            generatePom(pom, "pom")
+            generatePom(pom, "jar")
         }
     }
 }
 
-signModule.dependsOn generateMetadataFileForReleasePublication
-signPom.dependsOn generatePomFileForReleasePublication
-
-task signFiles {
-    dependsOn(signPom, signModule, signJar)
+if (canSign) {
+    signing {
+        sign publishing.publications.Release
+    }
 }
 
 nexusPublishing {
@@ -133,11 +114,19 @@ subprojects {
     }
 }
 
-// To publish run these together:
-/*
+// To publish run ./gradlew release
 
-./gradlew \
-    publishAllPublicationsToSonatypeRepository \
-    closeAndReleaseSonatypeStagingRepository
+task release {
+    afterEvaluate {
+        // Collect all the publishing task which upload the archives to nexus staging
+        def publishingTasks = [
+            ":", ":api:", ":natives:"
+        ].collect { it + "publishAllPublicationsToSonatypeRepository" }
 
- */
+        dependsOn(publishingTasks)
+
+        // Make sure the close and release happens after uploading
+        dependsOn(closeAndReleaseSonatypeStagingRepository)
+        closeAndReleaseSonatypeStagingRepository.mustRunAfter(publishingTasks)
+    }
+}

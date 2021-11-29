@@ -90,10 +90,7 @@ any other features. This can be used if you want all features of this binding.
 
 ```gradle
 dependencies {
-    implementation("club.minnced:opus-java:%VERSION%@pom") {
-        transitive = true // gradle defaults to transitive false with @pom
-        // kotlin uses isTransitive instead
-    }
+    implementation("club.minnced:opus-java:%VERSION%")
 }
 ```
 
@@ -104,6 +101,5 @@ dependencies {
     <groupId>club.minnced</groupId>
     <artifactId>opus-java</artifactId>
     <version>%VERSION%</version>
-    <type>pom</type>
 </dependency>
 ```
